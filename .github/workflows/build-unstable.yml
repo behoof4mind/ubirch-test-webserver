@@ -16,7 +16,6 @@ jobs:
         java: [ 8 ]
     name: Java ${{ matrix.java }} compile
     steps:
-
       - name: Checkout Source Code
         uses: actions/checkout@v2
       - name: Setup Java
@@ -36,50 +35,53 @@ jobs:
       - run: echo ${{github.repository}}
 
       - name: Set default version if release is not found
+        id: version_step
         run: |
           if [[ "${{ steps.release_version.outputs.release }}" = "" ]]; then
             echo "NEW_VERSION=$(echo "0.0.1")" >> $GITHUB_ENV
+            echo "::set-output name=new_version::0.0.1"
           else
             echo "NEW_VERSION=$(echo "${{ steps.release_version.outputs.release }}")" >> $GITHUB_ENV
+            echo "::set-output name=new_version::${{ steps.release_version.outputs.release }}"
           fi
 
       - name: Compile the Project
         run: mvn -B compile -Drevision=${{ env.NEW_VERSION }}-${GITHUB_SHA::8}
-#  build:
-#    runs-on: ubuntu-20.04
-#    needs: compile
-#    name: Build the Maven Project
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/cache@v2
-#        with:
-#          path: ~/.m2/repository
-#          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-#          restore-keys: |
-#            ${{ runner.os }}-maven-
-#      - name: Login to Azure Container Registry
-#        uses: docker/login-action@v1
-#        with:
-#          registry: iitsc.azurecr.io
-#          username: iitsc
-#          password: ${{ secrets.ACR_PASSWORD }}
-#      - name: Set up JDK 8
-#        uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-version: '8'
-#          java-package: jdk
-#      - name: Build and test project
-#        run: mvn -B deploy -Drevision=${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}
-#      - name: Release
-#        uses: softprops/action-gh-release@v1
-#        with:
-#          tag_name: ${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}
-#          prerelease: true
-#          files: |
-#            target/*.jar
-#
-##    - name: Upload Maven build artifact
-##      uses: actions/upload-artifact@v2
-##      with:
-##        path: target/
+  build:
+    runs-on: ubuntu-20.04
+    needs: compile
+    name: Build the Maven Project
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Login to Azure Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: iitsc.azurecr.io
+          username: iitsc
+          password: ${{ secrets.ACR_PASSWORD }}
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+          java-package: jdk
+      - name: Build and test project
+        run: mvn -B deploy -Drevision=${{ jobs.compile.steps.version_step.outputs.new_version }}-${GITHUB_SHA::8}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ jobs.compile.steps.version_step.outputs.new_version }}-${GITHUB_SHA::8}
+          prerelease: true
+          files: |
+            target/*.jar
+
+#    - name: Upload Maven build artifact
+#      uses: actions/upload-artifact@v2
+#      with:
+#        path: target/
