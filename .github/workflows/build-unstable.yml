@@ -74,11 +74,11 @@ jobs:
           java-version: '8'
           java-package: jdk
       - name: Build and test project
-        run: mvn -B deploy -Drevision=${{ needs.compile.steps.version_step.outputs.new_version }}-${GITHUB_SHA::8}
+        run: mvn -B deploy -Drevision=${{ needs.compile.outputs.new_version }}-${GITHUB_SHA::8}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.compile.steps.version_step.outputs.new_version }}-${GITHUB_SHA::8}
+          tag_name: ${{ needs.compile.outputs.new_version }}-${GITHUB_SHA::8}
           prerelease: true
           files: |
             target/*.jar
