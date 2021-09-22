@@ -16,7 +16,7 @@ jobs:
         java: [ 8 ]
     name: Java ${{ matrix.java }} compile
     steps:
-      - run: echo $GITHUB_REPOSITORY
+      - run: echo ${{ GITHUB_REPOSITORY }}
 
 #      - name: Checkout Source Code
 #        uses: actions/checkout@v2
