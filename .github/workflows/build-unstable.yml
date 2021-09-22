@@ -41,7 +41,7 @@ jobs:
         run: |
           if [[ "${{ steps.release_version.outputs.release }}" = "" ]]; then
             echo "NEW_VERSION=$(echo "0.0.1-${GITHUB_SHA::8}")" >> $GITHUB_ENV
-            echo "::set-output name=nv::0.0.1"
+            echo "::set-output name=nv::0.0.1-${GITHUB_SHA::8}"
           else
             echo "NEW_VERSION=$(echo "${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}")" >> $GITHUB_ENV
             echo "::set-output name=nv::${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}"
