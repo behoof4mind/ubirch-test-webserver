@@ -16,27 +16,27 @@ jobs:
         java: [ 8 ]
     name: Java ${{ matrix.java }} compile
     steps:
+
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-package: jdk
+          java-version: ${{ matrix.java }}
+
+      - name: Get latest release version
+        uses: rez0n/actions-github-release@main
+        id: release_version
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{github.repository}}
+          type: "stable"
       - run: echo ${{github.repository}}
 
-#      - name: Checkout Source Code
-#        uses: actions/checkout@v2
-#      - name: Setup Java
-#        uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-package: jdk
-#          java-version: ${{ matrix.java }}
-#
-#      - name: Get latest release version
-#        uses: rez0n/actions-github-release@main
-#        id: release_version
-#        env:
-#          token: ${{ secrets.GITHUB_TOKEN }}
-#          repository: $GITHUB_REPOSITORY
-#          type: "stable"
-#
-#      - name: Compile the Project
-#        run: mvn -B compile -Drevision=${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}
+      - name: Compile the Project
+        run: mvn -B compile -Drevision=${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}
 #  build:
 #    runs-on: ubuntu-20.04
 #    needs: compile
