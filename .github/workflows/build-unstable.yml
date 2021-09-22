@@ -30,7 +30,7 @@ jobs:
         id: release_version
         env:
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: "nodejs/node"
+          repository: ${{ github.repository }}
           type: "stable"
 
       - run: echo ${{ steps.release_version.outputs.release }}
