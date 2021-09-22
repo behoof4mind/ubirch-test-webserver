@@ -86,8 +86,3 @@ jobs:
           prerelease: true
           files: |
             target/*.jar
-
-#    - name: Upload Maven build artifact
-#      uses: actions/upload-artifact@v2
-#      with:
-#        path: target/
