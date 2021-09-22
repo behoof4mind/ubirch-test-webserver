@@ -7,6 +7,10 @@ on:
       - edited
       - reopened
       - synchronize
+    paths-ignore:
+      - '.github/**'
+      - 'README.md'
+      - 'pom.xml'
 
 jobs:
   compile:
