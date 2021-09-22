@@ -35,8 +35,16 @@ jobs:
           type: "stable"
       - run: echo ${{github.repository}}
 
+      - name: Set default version if release is not found
+        run: |
+          if [[ "${{ steps.release_version.outputs.release }}" = "" ]]; then
+            echo "NEW_VERSION=$(echo "0.0.1")" >> $GITHUB_ENV
+          else
+            echo "NEW_VERSION=$(echo "${{ steps.release_version.outputs.release }}")" >> $GITHUB_ENV
+          fi
+
       - name: Compile the Project
-        run: mvn -B compile -Drevision=${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}
+        run: mvn -B compile -Drevision=${{ env.NEW_VERSION }}-${GITHUB_SHA::8}
 #  build:
 #    runs-on: ubuntu-20.04
 #    needs: compile
