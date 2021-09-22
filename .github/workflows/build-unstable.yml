@@ -40,15 +40,15 @@ jobs:
         id: version_step
         run: |
           if [[ "${{ steps.release_version.outputs.release }}" = "" ]]; then
-            echo "NEW_VERSION=$(echo "0.0.1")" >> $GITHUB_ENV
+            echo "NEW_VERSION=$(echo "0.0.1-${GITHUB_SHA::8}")" >> $GITHUB_ENV
             echo "::set-output name=nv::0.0.1"
           else
-            echo "NEW_VERSION=$(echo "${{ steps.release_version.outputs.release }}")" >> $GITHUB_ENV
-            echo "::set-output name=nv::${{ steps.release_version.outputs.release }}"
+            echo "NEW_VERSION=$(echo "${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}")" >> $GITHUB_ENV
+            echo "::set-output name=nv::${{ steps.release_version.outputs.release }}-${GITHUB_SHA::8}"
           fi
 
       - name: Compile the Project
-        run: mvn -B compile -Drevision=${{ env.NEW_VERSION }}-${GITHUB_SHA::8}
+        run: mvn -B compile -Drevision=${{ env.NEW_VERSION }}
   build:
     runs-on: ubuntu-20.04
     needs: compile
@@ -74,11 +74,11 @@ jobs:
           java-version: '8'
           java-package: jdk
       - name: Build and test project
-        run: mvn -B deploy -Drevision=${{ needs.compile.outputs.new_version }}-${GITHUB_SHA::8}
+        run: mvn -B deploy -Drevision=${{ needs.compile.outputs.new_version }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ needs.compile.outputs.new_version }}-${GITHUB_SHA::8}
+          tag_name: ${{ needs.compile.outputs.new_version }}
           prerelease: true
           files: |
             target/*.jar
