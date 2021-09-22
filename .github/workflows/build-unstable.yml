@@ -11,6 +11,8 @@ on:
 jobs:
   compile:
     runs-on: ubuntu-20.04
+    outputs:
+      new_version: ${{ steps.version_step.outputs.nv }}
     strategy:
       matrix:
         java: [ 8 ]
@@ -39,10 +41,10 @@ jobs:
         run: |
           if [[ "${{ steps.release_version.outputs.release }}" = "" ]]; then
             echo "NEW_VERSION=$(echo "0.0.1")" >> $GITHUB_ENV
-            echo "::set-output name=new_version::0.0.1"
+            echo "::set-output name=nv::0.0.1"
           else
             echo "NEW_VERSION=$(echo "${{ steps.release_version.outputs.release }}")" >> $GITHUB_ENV
-            echo "::set-output name=new_version::${{ steps.release_version.outputs.release }}"
+            echo "::set-output name=nv::${{ steps.release_version.outputs.release }}"
           fi
 
       - name: Compile the Project
