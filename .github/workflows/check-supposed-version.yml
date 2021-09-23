@@ -51,9 +51,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: echo ${{ steps.checkTag.outputs.exists }}
-      - uses: actions/github-script@0.9.0
-        if: ${{ steps.checkTag.outputs.exists }}
+      - name: Send comment to the PR
+        uses: actions/github-script@0.9.0
+        if: ${{ steps.checkTag.outputs.exists == 'true' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -67,7 +67,7 @@ jobs:
             })
 
       - name: Exit if version already exists
-        if: ${{ steps.checkTag.outputs.exists }}
+        if: ${{ steps.checkTag.outputs.exists == 'true' }}
         run: |
           echo "::group::Version that should be released already exists in GitHub tags"
           exit 1
