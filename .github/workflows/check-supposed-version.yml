@@ -80,9 +80,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Temporary environment now destroyed
-
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, New supposed version: \`${{ steps.bump_semver.outputs.new_version }}\`*`;
+            const output = `*Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, New supposed version: \`${{ steps.bump_semver.outputs.new_version }}\`*`;
 
             github.issues.createComment({
               issue_number: context.issue.number,
