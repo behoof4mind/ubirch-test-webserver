@@ -6,7 +6,7 @@
     <!-- info -->
     <groupId>com.ubirch.test</groupId>
     <artifactId>web-server</artifactId>
-    <version>1.0.0-07f87673-309f9114-22b7db2f</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <organization>
