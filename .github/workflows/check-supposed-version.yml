@@ -30,35 +30,6 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'patch')
         run: echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
 
-#      - name: Check major label
-#        id: check_pr_labels_major
-#        uses: Dreamcodeio/pr-has-label-action@master
-#        with:
-#          label: 'major'
-#      - name: Check minor label
-#        id: check_pr_labels_minor
-#        uses: Dreamcodeio/pr-has-label-action@master
-#        with:
-#          label: 'minor'
-#      - name: Check patch label
-#        id: check_pr_labels_patch
-#        uses: Dreamcodeio/pr-has-label-action@master
-#        with:
-#          label: 'patch'
-#
-#      - name: Set found label
-#        run: |
-#          if [[ "${{ steps.check_pr_labels_major.outputs.hasLabel }}" ]]; then
-#            echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
-#          elif [[ "${{ steps.check_pr_labels_minor.outputs.hasLabel }}" ]]; then
-#            echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
-#          elif [[ "${{ steps.check_pr_labels_patch.outputs.hasLabel }}" ]]; then
-#            echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
-#          else
-#            echo "You need to specify correct label for your PR (major, minor or patch)"
-#            exit 1
-#          fi
-
       - name: Get supposed release version
         id: release_version
         run: |
@@ -74,7 +45,7 @@ jobs:
       - uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
         with:
-          tag: 0.0.1
+          tag: ${{ steps.bump_semver.outputs.new_version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
