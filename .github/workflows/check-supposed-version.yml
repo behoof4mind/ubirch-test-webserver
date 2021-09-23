@@ -9,40 +9,55 @@ on:
 jobs:
   enforce-label:
     name: Supposed version not exist
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'major')
+      || contains(github.event.pull_request.labels.*.name, 'minor')
+      || contains(github.event.pull_request.labels.*.name, 'patch')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Check major label
-        id: check_pr_labels_major
-        uses: Dreamcodeio/pr-has-label-action@master
-        with:
-          label: 'major'
-      - name: Check minor label
-        id: check_pr_labels_minor
-        uses: Dreamcodeio/pr-has-label-action@master
-        with:
-          label: 'minor'
-      - name: Check patch label
-        id: check_pr_labels_patch
-        uses: Dreamcodeio/pr-has-label-action@master
-        with:
-          label: 'patch'
 
-      - name: Set found label
-        run: |
-          if [[ "${{ steps.check_pr_labels_major.outputs.hasLabel }}" ]]; then
-            echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
-          elif [[ "${{ steps.check_pr_labels_minor.outputs.hasLabel }}" ]]; then
-            echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
-          elif [[ "${{ steps.check_pr_labels_patch.outputs.hasLabel }}" ]]; then
-            echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
-          else
-            echo "You need to specify correct label for your PR (major, minor or patch)"
-            exit 1
-          fi
+      - name: Check major label
+        if: contains(github.event.pull_request.labels.*.name, 'major')
+        run: echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
+      - name: Check minor label
+        if: contains(github.event.pull_request.labels.*.name, 'minor')
+        run: echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
+      - name: Check patch label
+        if: contains(github.event.pull_request.labels.*.name, 'patch')
+        run: echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
+
+#      - name: Check major label
+#        id: check_pr_labels_major
+#        uses: Dreamcodeio/pr-has-label-action@master
+#        with:
+#          label: 'major'
+#      - name: Check minor label
+#        id: check_pr_labels_minor
+#        uses: Dreamcodeio/pr-has-label-action@master
+#        with:
+#          label: 'minor'
+#      - name: Check patch label
+#        id: check_pr_labels_patch
+#        uses: Dreamcodeio/pr-has-label-action@master
+#        with:
+#          label: 'patch'
+#
+#      - name: Set found label
+#        run: |
+#          if [[ "${{ steps.check_pr_labels_major.outputs.hasLabel }}" ]]; then
+#            echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
+#          elif [[ "${{ steps.check_pr_labels_minor.outputs.hasLabel }}" ]]; then
+#            echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
+#          elif [[ "${{ steps.check_pr_labels_patch.outputs.hasLabel }}" ]]; then
+#            echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
+#          else
+#            echo "You need to specify correct label for your PR (major, minor or patch)"
+#            exit 1
+#          fi
 
       - name: Get supposed release version
         id: release_version
