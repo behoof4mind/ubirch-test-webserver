@@ -25,17 +25,17 @@ jobs:
         id: check_pr_labels_major
         uses: DanielTamkin/HasLabel@v1.0.4
         with:
-          exact: 'major'
+          contains: 'major'
       - name: Labeled to preview
         id: check_pr_labels_minor
         uses: DanielTamkin/HasLabel@v1.0.4
         with:
-          exact: 'minor'
+          contains: 'minor'
       - name: Labeled to preview
         id: check_pr_labels_patch
         uses: DanielTamkin/HasLabel@v1.0.4
         with:
-          exact: 'patch'
+          contains: 'patch'
 
       - name: Select proper label
         run: |
