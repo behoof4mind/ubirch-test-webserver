@@ -25,25 +25,25 @@ jobs:
         id: check_pr_labels_major
         uses: DanielTamkin/HasLabel@v1
         with:
-          contains: 'major'
+          exact: 'major'
       - name: Labeled to preview
         id: check_pr_labels_minor
         uses: DanielTamkin/HasLabel@v1
         with:
-          contains: 'minor'
+          exact: 'minor'
       - name: Labeled to preview
         id: check_pr_labels_patch
         uses: DanielTamkin/HasLabel@v1
         with:
-          contains: 'patch'
+          exact: 'patch'
 
       - name: Select proper label
         run: |
-          if [[ "${{ steps.check_pr_labels_major.outputs.labeled-preview }}" = true ]]; then
+          if [[ "${{ steps.check_pr_labels_major.outputs.labeled-major }}" = true ]]; then
             echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
-          elif [[ "${{ steps.check_pr_labels_minor.outputs.labeled-preview }}" = true ]]; then
+          elif [[ "${{ steps.check_pr_labels_minor.outputs.labeled-minor }}" = true ]]; then
             echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
-          elif [[ "${{ steps.check_pr_labels_patch.outputs.labeled-preview }}" = true ]]; then
+          elif [[ "${{ steps.check_pr_labels_patch.outputs.labeled-patch }}" = true ]]; then
             echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
           else
             echo "You need to specify correct label for your PR (major, minor or patch)"
