@@ -39,7 +39,9 @@ jobs:
 
       - name: Select proper label
         run: |
-          echo ${{ steps.check_pr_labels_major.outputs.labeled }}
+          echo ${{ steps.check_pr_labels_major.outputs }}
+          echo ${{ steps.check_pr_labels_minor.outputs }}
+          echo ${{ steps.check_pr_labels_patch.outputs }}
           if [[ ${{ steps.check_pr_labels_major.outputs.labeled }} ]]; then
             echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
           elif [[ ${{ steps.check_pr_labels_minor.outputs.labeled }} ]]; then
