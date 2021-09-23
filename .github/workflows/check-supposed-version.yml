@@ -1,0 +1,78 @@
+name: Enforce PR labels (major, minor or patch)
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - opened
+
+jobs:
+  enforce-label:
+    name: Supposed version check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Check PR labels action step
+        id: check_pr_labels_major
+        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels: '["major"]'
+
+      - name: Check PR labels action step
+        id: check_pr_labels_minor
+        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels: '["minor"]'
+
+      - name: Check PR labels action step
+        id: check_pr_labels_patch
+        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labels: '["patch"]'
+
+      - name: Select proper label
+        run: |
+          if [[ "${{ steps.check_pr_labels_major.outputs.result }}" = true ]]; then
+            echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
+          elif [[ "${{ steps.check_pr_labels_minor.outputs.result }}" = true ]]; then
+            echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
+          elif [[ "${{ steps.check_pr_labels_patch.outputs.result }}" = true ]]; then
+            echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
+          else
+            echo "You need to specify correct label for your PR (major, minor or patch)"
+            exit 1
+          fi
+
+      - name: Get supposed release version
+        id: release_version
+        run: |
+          echo "::set-output name=release::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+
+      - name: Calculate new version
+        uses: actions-ecosystem/action-bump-semver@v1
+        id: bump_semver
+        with:
+          current_version: ${{ steps.release_version.outputs.release }}
+          level: ${{ env.CORRECT_LABEL }}
+
+      - uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with:
+          tag: ${{ steps.bump_semver.outputs.new_version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cancel Previous Runs
+        if: steps.checkTag.outputs.exists != 'ture'
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          workflow_id: ${{ github.event.workflow.id }}
+          access_token: ${{ github.token }}
