@@ -79,7 +79,9 @@ jobs:
 
       - name: Exit if version already exists
         if: ${{ steps.checkTag.outputs.exists }} = 'true'
-        run: exit 1
+        run: |
+          echo "::group::Version that should be released already exists in GitHub tags"
+          exit 1
 
       - uses: actions/github-script@0.9.0
         with:
