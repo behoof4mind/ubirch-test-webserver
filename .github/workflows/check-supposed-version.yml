@@ -9,7 +9,7 @@ on:
 
 jobs:
   enforce-label:
-    name: If exists in tags
+    name: If not exists in tags
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
