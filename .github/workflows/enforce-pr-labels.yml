@@ -23,6 +23,3 @@ jobs:
           echo "::group::Correct label NOT found"
           echo "::endgroup::"
           exit 1
-      - run: echo "123"
-
-

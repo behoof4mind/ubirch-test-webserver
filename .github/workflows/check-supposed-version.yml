@@ -20,15 +20,13 @@ jobs:
 
       - name: Fail if there is no correct label
         if: |
-          ${{
-            (!contains(github.event.pull_request.labels.*.name, 'major'))
-            && (!contains(github.event.pull_request.labels.*.name, 'minor'))
-          }}
+          !contains(github.event.pull_request.labels.*.name, 'major')
+          && !contains(github.event.pull_request.labels.*.name, 'minor')
+          && !contains(github.event.pull_request.labels.*.name, 'patch')
         run: |
           echo "::group::Correct label NOT found"
           echo "::endgroup::"
           exit 1
-
       - name: Check major label
         if: contains(github.event.pull_request.labels.*.name, 'major')
         run: echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
