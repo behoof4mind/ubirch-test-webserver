@@ -18,6 +18,7 @@ jobs:
         with:
           concurrent_skipping: 'same_content_newer'
           skip_after_successful_duplicate: 'true'
+          cancel_others: true
   enforce-label:
     name: Labels check (major, minor or patch)
     needs: pre_job
