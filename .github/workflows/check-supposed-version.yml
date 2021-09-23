@@ -74,7 +74,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `*Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Version \`${{ steps.bump_semver.outputs.new_version }}\` already exists*`;
+            const output = `*Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, ⚠️ Version \`${{ steps.bump_semver.outputs.new_version }}\` already exists*`;
 
             github.issues.createComment({
               issue_number: context.issue.number,
@@ -83,12 +83,9 @@ jobs:
               body: output
             })
 
-      - name: Cancel Workflow
+      - name: Exit if version already exists
         if: ${{ steps.checkTag.outputs.exists }} = 'true'
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          workflow_id: ${{ github.event.workflow.id }}
-          access_token: ${{ github.token }}
+        run: exit 1
 
       - uses: actions/github-script@0.9.0
         with:
