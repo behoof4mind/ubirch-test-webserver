@@ -10,6 +10,7 @@ on:
 jobs:
   enforce-label:
     name: Labels check (major, minor or patch)
+    if: ${{github.event.pull_request.labels.*.name[0]}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

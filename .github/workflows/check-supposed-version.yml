@@ -10,6 +10,7 @@ on:
 jobs:
   enforce-label:
     name: Supposed version not exist
+    if: ${{github.event.pull_request.labels.*.name[0]}}
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
