@@ -10,15 +10,19 @@ on:
 jobs:
   enforce-label:
     name: Labels check (major, minor or patch)
+    if: |
+      github.event.label.name == 'major'
+        || github.event.label.name == 'minor'
+        || github.event.label.name == 'patch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Looking for any (major, minor or patch) label
-        uses: yogevbd/enforce-label-action@2.1.0
-        with:
-          REQUIRED_LABELS_ANY: "major,minor,patch"
-          REQUIRED_LABELS_ANY_DESCRIPTION: "Select at least one label ['major','minor','patch']"
+#      - name: Looking for any (major, minor or patch) label
+#        uses: yogevbd/enforce-label-action@2.1.0
+#        with:
+#          REQUIRED_LABELS_ANY: "major,minor,patch"
+#          REQUIRED_LABELS_ANY_DESCRIPTION: "Select at least one label ['major','minor','patch']"
 
