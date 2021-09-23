@@ -1,4 +1,4 @@
-name: Enforce PR labels (major, minor or patch)
+name: Supposed version check
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   enforce-label:
-    name: Supposed version check
+    name: If exists in tags
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
