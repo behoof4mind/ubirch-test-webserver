@@ -17,5 +17,6 @@ jobs:
       - name: Output
         run: |
           echo "::group::Correct label found"
+          echo "::endgroup::"
 
 
