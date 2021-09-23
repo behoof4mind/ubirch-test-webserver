@@ -18,16 +18,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check major label
-        if: contains(github.event.pull_request.labels.*.name, 'major')
-        run: echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
-      - name: Check minor label
-        if: contains(github.event.pull_request.labels.*.name, 'minor')
-        run: echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
-      - name: Check patch label
-        if: contains(github.event.pull_request.labels.*.name, 'patch')
-        run: echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
-
       - name: Fail if there is no correct label
         if: |
           !contains(github.event.pull_request.labels.*.name, 'major')
@@ -37,6 +27,16 @@ jobs:
           echo "::group::Correct label NOT found"
           echo "::endgroup::"
           exit 1
+
+      - name: Check major label
+        if: contains(github.event.pull_request.labels.*.name, 'major')
+        run: echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
+      - name: Check minor label
+        if: contains(github.event.pull_request.labels.*.name, 'minor')
+        run: echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
+      - name: Check patch label
+        if: contains(github.event.pull_request.labels.*.name, 'patch')
+        run: echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
 
       - name: Get supposed release version
         id: release_version
