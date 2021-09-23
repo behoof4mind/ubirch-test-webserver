@@ -82,7 +82,7 @@ jobs:
           script: |
             const output = `#### Temporary environment now destroyed
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, New supposed version: \`${{ steps.bump_semver.outputs.new_version }}\`*`;
 
             github.issues.createComment({
               issue_number: context.issue.number,
