@@ -23,33 +23,27 @@ jobs:
           fetch-depth: 0
       - name: Labeled to preview
         id: check_pr_labels_major
-        uses: DanielTamkin/HasLabel@v1.0.4
+        uses: Dreamcodeio/pr-has-label-action@master
         with:
-          contains: 'major'
+          label: 'major'
       - name: Labeled to preview
         id: check_pr_labels_minor
-        uses: DanielTamkin/HasLabel@v1.0.4
+        uses: Dreamcodeio/pr-has-label-action@master
         with:
-          contains: 'minor'
+          label: 'minor'
       - name: Labeled to preview
         id: check_pr_labels_patch
-        uses: DanielTamkin/HasLabel@v1.0.4
+        uses: Dreamcodeio/pr-has-label-action@master
         with:
-          contains: 'patch'
+          label: 'patch'
 
       - name: Select proper label
         run: |
-          echo ${{ steps.check_pr_labels_major.outputs }}
-          echo ${{ steps.check_pr_labels_minor.outputs }}
-          echo ${{ steps.check_pr_labels_patch.outputs }}
-          echo "${{ steps.check_pr_labels_major.outputs }}"
-          echo "${{ steps.check_pr_labels_minor.outputs }}"
-          echo "${{ steps.check_pr_labels_patch.outputs }}"
-          if [[ ${{ steps.check_pr_labels_major.outputs.labeled }} ]]; then
+          if [[ ${{ steps.check_pr_labels_major.outputs.hasLabel }} ]]; then
             echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
-          elif [[ ${{ steps.check_pr_labels_minor.outputs.labeled }} ]]; then
+          elif [[ ${{ steps.check_pr_labels_minor.outputs.hasLabel }} ]]; then
             echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
-          elif [[ ${{ steps.check_pr_labels_patch.outputs.labeled }} ]]; then
+          elif [[ ${{ steps.check_pr_labels_patch.outputs.hasLabel }} ]]; then
             echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
           else
             echo "You need to specify correct label for your PR (major, minor or patch)"
