@@ -75,7 +75,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `*Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, ⚠️ Version \`${{ steps.bump_semver.outputs.new_version }}\` already exists*`;
+            const output = `⚠️ Version \`${{ steps.bump_semver.outputs.new_version }}\` already exists ⚠️`;
 
             github.issues.createComment({
               issue_number: context.issue.number,
