@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fail if there is no correct label
-        if: (!contains(github.event.pull_request.labels.*.name, 'major')) || (!contains(github.event.pull_request.labels.*.name, 'minor'))
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'major') || !contains(github.event.pull_request.labels.*.name, 'minor') }}
         run: |
           echo "::group::Correct label NOT found"
           echo "::endgroup::"
