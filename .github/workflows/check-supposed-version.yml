@@ -13,31 +13,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
-        if: steps.checkTag.outputs.exists != 'ture'
         uses: styfle/cancel-workflow-action@0.9.1
         with:
+          all_but_latest: true
           access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Labeled to preview
+      - name: Check major label
         id: check_pr_labels_major
         uses: Dreamcodeio/pr-has-label-action@master
         with:
           label: 'major'
-      - name: Labeled to preview
+      - name: Check minor label
         id: check_pr_labels_minor
         uses: Dreamcodeio/pr-has-label-action@master
         with:
           label: 'minor'
-      - name: Labeled to preview
+      - name: Check patch label
         id: check_pr_labels_patch
         uses: Dreamcodeio/pr-has-label-action@master
         with:
           label: 'patch'
 
-      - name: Select proper label
+      - name: Set found label
         run: |
           if [[ "${{ steps.check_pr_labels_major.outputs.hasLabel }}" ]]; then
             echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
