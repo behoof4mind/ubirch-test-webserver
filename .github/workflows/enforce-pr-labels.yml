@@ -16,6 +16,6 @@ jobs:
         || github.event.label.name == 'patch'
     runs-on: ubuntu-latest
     steps:
-      - run: echo "::info::Correct label found"
+      - run: echo "::group::Correct label found"
 
 
