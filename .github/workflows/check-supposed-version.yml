@@ -16,27 +16,21 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: Check PR labels action step
+      - name: Labeled to preview
         id: check_pr_labels_major
-        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+        uses: DanielTamkin/HasLabel@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          labels: '["major"]'
-
-      - name: Check PR labels action step
+          contains: 'major'
+      - name: Labeled to preview
         id: check_pr_labels_minor
-        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+        uses: DanielTamkin/HasLabel@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          labels: '["minor"]'
-
-      - name: Check PR labels action step
+          contains: 'minor'
+      - name: Labeled to preview
         id: check_pr_labels_patch
-        uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+        uses: DanielTamkin/HasLabel@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          labels: '["patch"]'
+          contains: 'patch'
 
       - name: Select proper label
         run: |
