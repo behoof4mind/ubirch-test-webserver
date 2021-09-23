@@ -70,7 +70,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/github-script@0.9.0
-        if: steps.checkTag.outputs.exists
+        if: ${{ steps.checkTag.outputs.exists }} = 'true'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -84,7 +84,7 @@ jobs:
             })
 
       - name: Cancel Workflow
-        if: steps.checkTag.outputs.exists
+        if: ${{ steps.checkTag.outputs.exists }} = 'true'
         uses: styfle/cancel-workflow-action@0.9.1
         with:
           workflow_id: ${{ github.event.workflow.id }}
