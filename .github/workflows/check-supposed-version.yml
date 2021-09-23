@@ -8,9 +8,21 @@ on:
       - opened
 
 jobs:
+  pre_job:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          concurrent_skipping: 'same_content'
+          skip_after_successful_duplicate: 'true'
   enforce-label:
     name: If not exists in tags
+    needs: pre_job
     runs-on: ubuntu-latest
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
