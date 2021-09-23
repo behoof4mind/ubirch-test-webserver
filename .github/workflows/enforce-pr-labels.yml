@@ -12,15 +12,15 @@ on:
 jobs:
   enforce-label:
     name: Labels check (major, minor or patch)
-    if: |
-      contains(github.event.pull_request.labels.*.name, 'major')
-      || contains(github.event.pull_request.labels.*.name, 'minor')
-      || contains(github.event.pull_request.labels.*.name, 'patch')
     runs-on: ubuntu-latest
     steps:
-      - name: Output
+      - name: Fail if there is no correct label
+        if: |
+          !contains(github.event.pull_request.labels.*.name, 'major')
+          || !contains(github.event.pull_request.labels.*.name, 'minor')
+          || !contains(github.event.pull_request.labels.*.name, 'patch')
         run: |
-          echo "::group::Correct label found"
+          echo "::group::Correct label NOT found"
           echo "::endgroup::"
 
 
