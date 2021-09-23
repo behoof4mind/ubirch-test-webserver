@@ -23,17 +23,17 @@ jobs:
           fetch-depth: 0
       - name: Labeled to preview
         id: check_pr_labels_major
-        uses: DanielTamkin/HasLabel@v1
+        uses: DanielTamkin/HasLabel@v1.0.4
         with:
           exact: 'major'
       - name: Labeled to preview
         id: check_pr_labels_minor
-        uses: DanielTamkin/HasLabel@v1
+        uses: DanielTamkin/HasLabel@v1.0.4
         with:
           exact: 'minor'
       - name: Labeled to preview
         id: check_pr_labels_patch
-        uses: DanielTamkin/HasLabel@v1
+        uses: DanielTamkin/HasLabel@v1.0.4
         with:
           exact: 'patch'
 
