@@ -11,11 +11,9 @@ jobs:
   enforce-label:
     name: Labels check (major, minor or patch)
     if: |
-      github.event.label.name == 'major'
-        || github.event.label.name == 'minor'
-        || github.event.label.name == 'patch'
+      contains(github.event.pull_request.labels.*.name, 'major') || contains(github.event.pull_request.labels.*.name, 'minor') || contains(github.event.pull_request.labels.*.name, 'patch')
     runs-on: ubuntu-latest
     steps:
-      - run: echo "::group::Correct label found"
+      - run: echo "Correct label found"
 
 
