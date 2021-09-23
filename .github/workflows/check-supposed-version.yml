@@ -5,6 +5,7 @@ on:
     types:
       - labeled
       - opened
+      - edited
 
 jobs:
   enforce-label:
