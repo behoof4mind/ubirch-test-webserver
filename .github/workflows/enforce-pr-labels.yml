@@ -22,5 +22,6 @@ jobs:
         run: |
           echo "::group::Correct label NOT found"
           echo "::endgroup::"
+          exit 1
 
 
