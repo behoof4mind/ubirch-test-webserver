@@ -69,8 +69,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cancel Previous Runs
-        if: steps.checkTag.outputs.exists != 'ture'
+      - uses: actions/github-script@0.9.0
+        if: steps.checkTag.outputs.exists
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `*Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Version \`${{ steps.bump_semver.outputs.new_version }}\` already exists*`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Cancel Workflow
+        if: steps.checkTag.outputs.exists
         uses: styfle/cancel-workflow-action@0.9.1
         with:
           workflow_id: ${{ github.event.workflow.id }}
