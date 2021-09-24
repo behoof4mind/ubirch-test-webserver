@@ -8,11 +8,12 @@ on:
       - opened
       - edited
       - synchronize
-    paths-ignore:
-      - '.github/**'
-      - '.gitignore'
-      - 'pom.xml'
-      - 'README.md'
+    paths:
+      - '**'
+      - '!.github/**'
+      - '!.gitignore'
+      - '!pom.xml'
+      - '!README.md'
 
 jobs:
   enforce-label:
