@@ -26,7 +26,8 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
       - run: |
-          echo $(${{ github.event.pull_request.head.sha }} | cut -c 1-7)
+          TEST1=$(${{ github.event.pull_request.head.sha }} | cut -c 1-7)
+          echo $TEST1
           echo ${ github.event.pull_request.head.sha }
           echo ${github.event.pull_request.head.sha}
           echo ${github.event.pull_request.head.sha::8}
