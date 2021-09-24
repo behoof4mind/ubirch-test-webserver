@@ -83,6 +83,8 @@ jobs:
     runs-on: ubuntu-20.04
     needs: compile
     name: Build the Maven Project
+    env:
+      GITHUB_TOKEN: ${{ secrets.TOKEN_DENIS }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
@@ -103,6 +105,14 @@ jobs:
           distribution: 'adopt'
           java-version: '8'
           java-package: jdk
+      - name: Change version
+        run: mvn versions:set versions:commit -DnewVersion=${{ needs.compile.outputs.new_version }}
+      - name: Commit and push updated pom.xml
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: pom.xml
+          message: "[Auto-update] pom.xml version updated"
+          branch: ${{ github.head_ref }}
       - name: Build and test project
         run: mvn -B deploy -Drevision=${{ needs.compile.outputs.new_version }}
       - name: Release
