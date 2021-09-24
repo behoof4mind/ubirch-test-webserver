@@ -9,6 +9,7 @@ on:
       - synchronize
     paths:
       - '**'
+      - '!chart/**'
       - '!pom.xml'
       - '!README.md'
 
@@ -88,7 +89,7 @@ jobs:
             Released version after merge: \`${{ needs.compile.outputs.new_version }}\`
             Current version: \`${{ needs.compile.outputs.new_version }}\`
             Docker image: \`iitsc.azurecr.io/images/ubirch-test-web-server\`:\`${{ needs.compile.outputs.new_version }}\`
-            Your application link: https://ci.dev.ubirch.com/applications/\`${{ github.event.repository.name }}\``;
+            Your application link: https://ci.dev.ubirch.com/applications/${{ github.event.repository.name }}`;
 
             github.issues.createComment({
               issue_number: context.issue.number,

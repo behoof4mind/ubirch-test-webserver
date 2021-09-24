@@ -6,8 +6,7 @@ on:
       - main
     paths:
       - '**'
-      - '!.github/**'
-      - '!.gitignore'
+      - '!chart/**'
       - '!pom.xml'
       - '!README.md'
 

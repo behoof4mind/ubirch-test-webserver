@@ -10,8 +10,7 @@ on:
       - synchronize
     paths:
       - '**'
-      - '!.github/**'
-      - '!.gitignore'
+      - '!chart/**'
       - '!pom.xml'
       - '!README.md'
 
