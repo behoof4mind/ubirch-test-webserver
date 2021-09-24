@@ -8,6 +8,8 @@ on:
       - reopened
       - synchronize
     paths:
+      - '**'
+      - '!.github/**'
       - '!.gitignore'
       - '!pom.xml'
       - '!README.md'
