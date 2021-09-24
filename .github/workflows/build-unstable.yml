@@ -50,9 +50,9 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: Compile the Project
         run: |
-          mvn versions:set -DnewVersion=${{ needs.compile.outputs.new_version }} -DprocessAllModules
-          mvn versions:update-child-modules
-          mvn versions:commit -DprocessAllModules
+          mvn versions:set -DnewVersion=${{ steps.version_step.outputs.nv }} -DprocessAllModules
+#          mvn versions:update-child-modules
+#          mvn versions:commit -DprocessAllModules
           mvn -B compile -DnewVersion=${{ env.NEW_VERSION }}
   build:
     runs-on: ubuntu-20.04
