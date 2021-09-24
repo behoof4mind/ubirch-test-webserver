@@ -87,7 +87,8 @@ jobs:
             Action: \`${{ github.event_name }}\`
             Released version after merge: \`${{ needs.compile.outputs.new_version }}\`
             Current version: \`${{ needs.compile.outputs.new_version }}\`
-            Docker image: \`iitsc.azurecr.io/images/ubirch-test-web-server\`:\`${{ steps.bump_semver.outputs.new_version }}\``;
+            Docker image: \`iitsc.azurecr.io/images/ubirch-test-web-server\`:\`${{ needs.compile.outputs.new_version }}\`
+            Your application link: https://ci.dev.ubirch.com/applications/\`${{ github.event.repository.name }}\``;
 
             github.issues.createComment({
               issue_number: context.issue.number,
