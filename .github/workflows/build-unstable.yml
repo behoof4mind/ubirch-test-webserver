@@ -7,12 +7,11 @@ on:
       - edited
       - reopened
       - synchronize
-    paths:
-      - '**'
-      - '!chart/**'
-      - '!pom.xml'
-      - '!README.md'
-
+#    paths:
+#      - '**'
+#      - '!chart/**'
+#      - '!pom.xml'
+#      - '!README.md'
 
 jobs:
   compile:
