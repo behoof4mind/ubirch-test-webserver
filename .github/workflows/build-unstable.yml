@@ -7,11 +7,11 @@ on:
       - edited
       - reopened
       - synchronize
-#    paths:
-#      - '**'
-#      - '!chart/**'
-#      - '!pom.xml'
-#      - '!README.md'
+    paths:
+      - '**'
+      - '!chart/**'
+      - '!pom.xml'
+      - '!README.md'
 
 jobs:
   compile:
@@ -51,6 +51,7 @@ jobs:
       - name: Compile the Project
         run: |
           mvn versions:set -DnewVersion=${{ needs.compile.outputs.new_version }} -DprocessAllModules
+          mvn versions:update-child-modules
           mvn -B compile -DnewVersion=${{ env.NEW_VERSION }}
   build:
     runs-on: ubuntu-20.04
