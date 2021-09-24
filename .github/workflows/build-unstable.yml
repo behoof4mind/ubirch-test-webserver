@@ -49,9 +49,7 @@ jobs:
           java-package: jdk
           java-version: ${{ matrix.java }}
       - name: Compile the Project
-        run: |
-          mvn versions:set -DnewVersion=${{ env.NEW_VERSION }} -DprocessAllModules
-          mvn -B compile
+        run: mvn -B compile -DnewVersion=${{ env.NEW_VERSION }}
   build:
     runs-on: ubuntu-20.04
     needs: compile
@@ -76,6 +74,11 @@ jobs:
           distribution: 'adopt'
           java-version: '8'
           java-package: jdk
+
+      - name: Get supposed release version
+        id: release_version
+        run: |
+          echo "::set-output name=release::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
       - name: Build and test project
         run: |
           mvn versions:set -DnewVersion=${{ needs.compile.outputs.new_version }} -DprocessAllModules
@@ -96,13 +99,6 @@ jobs:
       - name: Check patch label
         if: contains(github.event.pull_request.labels.*.name, 'patch')
         run: echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
-
-      - name: Get supposed release version
-        id: release_version
-        run: |
-          echo "::set-output name=release::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
-
-      - run: echo ${{ steps.release_version.outputs.release }}
 
       - name: Calculate new version
         uses: actions-ecosystem/action-bump-semver@v1
