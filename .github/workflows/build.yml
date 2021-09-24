@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'src/**'
-      - 'Dockerfile'
+    paths-ignore:
+      - '.github/**'
+      - '.gitignore'
       - 'pom.xml'
+      - 'README.md'
 
 jobs:
   compile:
