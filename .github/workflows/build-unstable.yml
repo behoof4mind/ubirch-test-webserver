@@ -83,13 +83,34 @@ jobs:
           prerelease: true
           files: |
             target/*.jar
+      - name: Check major label
+        if: contains(github.event.pull_request.labels.*.name, 'major')
+        run: echo "CORRECT_LABEL=$(echo "major")" >> $GITHUB_ENV
+      - name: Check minor label
+        if: contains(github.event.pull_request.labels.*.name, 'minor')
+        run: echo "CORRECT_LABEL=$(echo "minor")" >> $GITHUB_ENV
+      - name: Check patch label
+        if: contains(github.event.pull_request.labels.*.name, 'patch')
+        run: echo "CORRECT_LABEL=$(echo "patch")" >> $GITHUB_ENV
+
+      - name: Get supposed release version
+        id: release_version
+        run: |
+          echo "::set-output name=release::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+
+      - name: Calculate new version
+        uses: actions-ecosystem/action-bump-semver@v1
+        id: bump_semver
+        with:
+          current_version: ${{ steps.release_version.outputs.release }}
+          level: ${{ env.CORRECT_LABEL }}
       - uses: actions/github-script@0.9.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `Pusher: @${{ github.actor }}
             Action: \`${{ github.event_name }}\`
-            Released version after merge: \`${{ needs.compile.outputs.new_version }}\`
+            Released version after merge: \`${{ steps.bump_semver.outputs.new_version }}\`
             Current version: \`${{ needs.compile.outputs.new_version }}\`
             Docker image: \`docker.io/ubirch-test-web-server:${{ needs.compile.outputs.new_version }}\`
             Your application link: https://ci.dev.ubirch.com/applications/${{ github.event.repository.name }}`;
