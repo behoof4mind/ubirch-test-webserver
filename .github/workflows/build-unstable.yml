@@ -7,10 +7,11 @@ on:
       - edited
       - reopened
       - synchronize
-    paths:
-      - '!.github/**'
-      - '!README.md'
-      - '!pom.xml'
+    paths-ignore:
+      - '.github/**'
+      - '.gitignore'
+      - 'pom.xml'
+      - 'README.md'
 
 jobs:
   compile:
