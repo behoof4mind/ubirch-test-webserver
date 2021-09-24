@@ -49,7 +49,7 @@ jobs:
           java-package: jdk
           java-version: ${{ matrix.java }}
       - name: Compile the Project
-        run: mvn -B compile -DnewVersion=${{ env.NEW_VERSION }}
+        run: mvn -B compile -DnewVersion=${{ env.NEW_VERSION }} -DprocessAllModules
   build:
     runs-on: ubuntu-20.04
     needs: compile
@@ -75,7 +75,7 @@ jobs:
           java-version: '8'
           java-package: jdk
       - name: Build and test project
-        run: mvn -B deploy -DnewVersion=${{ needs.compile.outputs.new_version }}
+        run: mvn -B deploy -DnewVersion=${{ needs.compile.outputs.new_version }} -DprocessAllModules
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
