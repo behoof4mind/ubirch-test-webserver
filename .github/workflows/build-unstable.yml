@@ -86,8 +86,8 @@ jobs:
           script: |
             const output = `*Pusher: @${{ github.actor }}
             Action: \`${{ github.event_name }}\`
-            Released version after merge: \`${{ steps.bump_semver.outputs.new_version }}\`*
-            Current version: \`${{ needs.compile.outputs.new_version }}\
+            Released version after merge: \`${{ needs.compile.outputs.new_version }}\`*
+            Current version: \`${{ needs.compile.outputs.new_version }}\`
             Docker image: \`iitsc.azurecr.io/images/ubirch-test-web-server:\`${{ steps.bump_semver.outputs.new_version }}\`\``;
 
             github.issues.createComment({
