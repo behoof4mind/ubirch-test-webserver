@@ -5,7 +5,7 @@ EXPOSE 8081
 ENTRYPOINT ["java", "-XX:+PrintFlagsFinal", "-jar", "/usr/share/ubirch/test-webserver.jar"]
 
 
-
+##
 
 ADD target/lib /usr/share/ubirch/lib
 ARG JAR_FILE
