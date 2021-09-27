@@ -9,7 +9,7 @@
 Here the list of things that need to be done to use this project as a template/example per organization:
 - Create technical GitHub admin user that will be able to push changes to the protected main branch
 - Generate token for this user and put it to the GitHub secrets
-- Use this secret in [build.yml](.github/workflows/build.yml?plain=1#L90-92) file instead of `TOKEN_DENIS`
+- Use this secret in [build.yml](.github/workflows/build.yml?plain=1#L90-L92) file instead of `TOKEN_DENIS`
   ```yaml
     steps:
       - uses: actions/checkout@v2
